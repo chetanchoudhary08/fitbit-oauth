@@ -1,0 +1,43 @@
+import React from "react";
+
+class OAuthButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: null,
+    };
+  }
+
+  componentDidMount() {
+    // Check the URL fragment for the access token.
+    const hash = window.location.hash;
+    const result = hash.match(/#access_token=(.*?)&/);
+
+    // If an access token is found, print it and save it in the state.
+    if (result) {
+      const token = result[1];
+      console.log(token);
+      this.setState({ token: token });
+    }
+  }
+
+  handleClick = () => {
+    // Replace this URL with your actual OAuth URL.
+    const url =
+      "https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=23R3NF&scope=activity+cardio_fitness+electrocardiogram+heartrate+location+nutrition+oxygen_saturation+profile+respiratory_rate+settings+sleep+social+temperature+weight&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F";
+
+    // Redirect the user to the OAuth URL.
+    window.location.href = url;
+  };
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.handleClick}>Click me for OAuth</button>
+        {this.state.token && <p>Access Token: {this.state.token}</p>}
+      </div>
+    );
+  }
+}
+
+export default OAuthButton;
